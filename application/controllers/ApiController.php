@@ -59,4 +59,22 @@ class ApiController extends CI_Controller {
         }
         echo json_encode($data);
     }
+
+    public function DeleteDataUSer()
+    {
+        $id_user = $this->input->post("id_user");
+        $check_hapus['id_user'] = $id_user;
+
+        $hapus =$this->db->delete('tbl_user', $check_hapus);
+        if ($hapus) {
+            $data['message']="Berhasil menghapus data user";
+            $data['status'] = true;
+            $data['response_code'] = 200;
+        }else {
+            $data['message']="Gagal menghapus data user";
+            $data['status'] = false;
+            $data['response_code'] = 404;
+        }
+        echo json_encode($data);
+    }
 }
