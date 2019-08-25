@@ -17,7 +17,7 @@ class ApiController extends CI_Controller {
         if ($check->num_rows() > 0) {
             $data['message']= "Email sudah terdaftar, gunakan email lain";
             $data['status'] = false;
-            $data['response_code'] = 500;
+            $data['response_code'] = 404;
 
             echo json_encode($data);
         }else{
@@ -36,7 +36,7 @@ class ApiController extends CI_Controller {
             }else {
                 $data['message']="Pendaftaran Gagal";
                 $data['status'] = false;
-                $data['response_code'] = 500;
+                $data['response_code'] = 404;
             }
             echo json_encode($data);
         }
@@ -55,7 +55,7 @@ class ApiController extends CI_Controller {
         }else {
             $data['message']="Gagal menampilkan data user";
             $data['status'] = false;
-            $data['response_code'] = 500;
+            $data['response_code'] = 404;
         }
         echo json_encode($data);
     }
@@ -76,5 +76,39 @@ class ApiController extends CI_Controller {
             $data['response_code'] = 404;
         }
         echo json_encode($data);
+    }
+
+
+    public function EditDataUser()
+    {
+        $id_user = $this->input->post('id_user');
+        $nama_user = $this->input->post('nama_user');
+        $email_user = $this->input->post('email_user');
+        $no_hp_user = $this->input->post('no_hp_user');
+        $alamat = $this->input->post('alamat');
+
+        $check = $this->db->get('tbl_user');
+        if ($check->num_rows() > 0) {
+            $this->db->where('id_user',$id_user);
+
+            $simpan['nama_user'] = $nama_user;
+            $simpan['email_user'] = $email_user;
+            $simpan['no_hp_user'] = $no_hp_user;
+            $simpan['alamat'] = $alamat;
+
+            $hasil = $this->db->where('id_user',$id_user)->update('tbl_user',$simpan);
+
+            if ($hasil) {
+                $data['message']="Berhasil Ubah data user ";
+                $data['status'] = true;
+                $data['response_code'] = 200;
+            }else {
+                $data['message']="Gagal ubah data user ";
+                $data['status'] = false;
+                $data['response_code'] = 404;
+            }
+            echo json_encode($data);
+        }
+
     }
 }
